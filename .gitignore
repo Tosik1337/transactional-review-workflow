@@ -1,0 +1,11 @@
+# Only reviewed portfolio documents are eligible for tracking.
+*
+!/assets/
+!/.gitattributes
+!/.gitignore
+!/CONTACT.md
+!/PORTFOLIO.md
+!/README.md
+!/RIGHTS.md
+!/assets/architecture.svg
+!/assets/review-states.svg

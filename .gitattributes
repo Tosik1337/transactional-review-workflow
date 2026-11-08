@@ -1,0 +1,5 @@
+*.md text eol=lf
+*.svg text eol=lf
+*.pdf binary
+.gitignore text eol=lf
+.gitattributes text eol=lf

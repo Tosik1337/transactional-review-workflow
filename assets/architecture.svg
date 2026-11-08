@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="826" viewBox="0 0 1200 826" role="img" aria-labelledby="title desc">
+  <title id="title">Transactional review workflow architecture</title>
+  <desc id="desc">Submitter, requester and reviewer use a Telegram bot interface. Separate workflow services persist submissions, reservations and decisions in SQLite. Dialogue memory and outbound messages are separate from saved business state.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#64748b"/></marker>
+    <style>text{font-family:Arial,Helvetica,sans-serif}.heading{fill:#12263a;font-size:34px;font-weight:700}.sub{fill:#53677b;font-size:18px}.label{fill:#12263a;font-size:23px;font-weight:700}.body{fill:#43596e;font-size:18px}.small{fill:#53677b;font-size:16px}.eyebrow{fill:#087e8b;font-size:16px;font-weight:700;letter-spacing:2px}.line{fill:none;stroke:#64748b;stroke-width:2.5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1200" height="790" rx="24" fill="#f4f7fb"/>
+  <text x="54" y="50" class="eyebrow">WORKFLOW / ARCHITECTURE</text>
+  <text x="54" y="100" class="heading">Clear ownership. Persistent decisions.</text>
+  <text x="54" y="136" class="sub">Business state and message delivery have separate boundaries.</text>
+  <g>
+    <rect x="54" y="182" width="330" height="94" rx="15" fill="#fff" stroke="#d8e2eb"/>
+    <text x="80" y="221" class="label">Submitter</text><text x="80" y="250" class="body">Image or document + description</text>
+    <rect x="435" y="182" width="330" height="94" rx="15" fill="#fff" stroke="#d8e2eb"/>
+    <text x="461" y="221" class="label">Requester</text><text x="461" y="250" class="body">Category + batch quantity</text>
+    <rect x="816" y="182" width="330" height="94" rx="15" fill="#fff" stroke="#d8e2eb"/>
+    <text x="842" y="221" class="label">Reviewer</text><text x="842" y="250" class="body">Claim work + record decisions</text>
+  </g>
+  <path d="M219 276V309H600V338" class="line"/>
+  <path d="M600 276V338" class="line"/>
+  <path d="M981 276V309H600" fill="none" stroke="#64748b" stroke-width="2.5"/>
+  <rect x="435" y="338" width="330" height="102" rx="15" fill="#12263a"/>
+  <text x="461" y="379" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="700">Telegram bot interface</text>
+  <text x="461" y="410" fill="#dce8f1" font-family="Arial,Helvetica,sans-serif" font-size="18">Handlers, buttons and role checks</text>
+  <path d="M600 440V489" class="line"/>
+  <rect x="435" y="489" width="330" height="115" rx="15" fill="#e3f4f2" stroke="#82bfb9"/>
+  <text x="461" y="532" class="label">Workflow services</text>
+  <text x="461" y="563" class="body">Intake · reservations · staff</text>
+  <text x="461" y="588" class="body">Typed results for each action</text>
+  <path d="M765 546H816" class="line"/>
+  <rect x="816" y="489" width="330" height="115" rx="15" fill="#fff" stroke="#d8e2eb"/>
+  <text x="842" y="532" class="label">SQLite state</text>
+  <text x="842" y="563" class="body">Items · batches · review results</text>
+  <text x="842" y="588" class="body">Transactions + consistency rules</text>
+  <path d="M435 382H384" class="line"/>
+  <rect x="54" y="338" width="330" height="102" rx="15" fill="#fff" stroke="#d8e2eb"/>
+  <text x="80" y="379" class="label">Dialogue memory</text>
+  <text x="80" y="410" class="body">Temporary input steps</text>
+  <path d="M765 382H981V440" class="line"/>
+  <text x="799" y="362" class="small">After a saved result</text>
+  <rect x="831" y="441" width="300" height="31" rx="8" fill="#fff0d6"/>
+  <text x="851" y="463" class="small">Messages sent by handlers</text>
+  <rect x="54" y="654" width="1092" height="82" rx="15" fill="#e9eef5"/>
+  <text x="80" y="687" class="body">A saved reservation can survive a missed notification.</text>
+  <text x="80" y="714" class="small">No durable notification outbox is present. Dialogue memory does not survive restart.</text>
+  <text x="54" y="768" class="small">Original illustration · neutral labels · source-reviewed structure · no runtime capture</text>
+<g id="portfolio-copyright"><rect x="0" y="790" width="1200" height="36" fill="#ffffff"/><text x="32" y="813" style="fill:#536777;font:12px Segoe UI,Arial,sans-serif">© 2026 Anton Gorodnichiy · All rights reserved · Private implementation</text></g>
+</svg>
