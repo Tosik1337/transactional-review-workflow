@@ -1,4 +1,4 @@
-# Only reviewed portfolio documents are eligible for tracking.
+# Only explicitly reviewed portfolio documents and genuine demo media.
 *
 !/assets/
 !/.gitattributes
@@ -7,5 +7,8 @@
 !/PORTFOLIO.md
 !/README.md
 !/RIGHTS.md
+!/assets/01-executed-results.png
+!/assets/02-workflow-details.png
+!/assets/03-scope-and-outcome.png
 !/assets/architecture.svg
 !/assets/review-states.svg

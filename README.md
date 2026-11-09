@@ -1,61 +1,57 @@
 # Transactional Review Workflow
 
-A Telegram workflow for collecting submissions, reserving a review batch and keeping each decision linked to the responsible reviewer.
+**Assign shared work once and keep the saved decision consistent when requests repeat.**
 
-**Private implementation — public case study. Source code is not publicly available.**
+![Recorded results of the executed private review harness](assets/01-executed-results.png)
 
-**Stack:** Python · aiogram 3 · aiosqlite · SQLite · asyncio  
-**Status:** reviewed in source; execution not verified
+*Captured from local synthetic-data demo. This is a browser capture of **recorded results from an executed synthetic-data harness**, not a live Telegram interface or an illustrative reconstruction. The report's separate scenarios are labelled; credits are fictional internal units.*
 
 ## Problem → Solution → Result
 
-| | Case |
-| --- | --- |
-| **Problem** | A shared review queue needs clear ownership. Two requests can compete for the same items, and repeated button clicks must not record a second decision. |
-| **Solution** | Separate submission, reservation and staff services, backed by SQLite transactions and database constraints. Reviewers claim a batch and decide each item. |
-| **Result** | The source contains persistent batch reservations, guarded review decisions and a path to return an unavailable reviewer's batch to the queue. These are implementation findings; runtime and production outcomes have not been verified. |
+Two people may compete for the same resource or work item. A repeated approval must not add a second credit. A private harness exercised selected unchanged original storage, reservation, staff and review-handler code with synthetic SQLite data and fake message delivery.
 
-## Workflow at a glance
+The observed result was one successful reservation, one assigned reviewer, and one credit change for a repeated approval. Separate checks covered sequential access revocation, failed post-commit notifications and saved work reopened in a new interpreter process.
 
-![Architecture: people use a bot interface, workflow services persist state in SQLite, and messages are sent separately](assets/architecture.svg)
+## What this demonstrates
 
-*Original explanatory diagram with neutral labels. This is an illustration of the source structure, not a screenshot.*
+- Competing reservations and reviewer claims each have one winner in the checked scenario.
+- Concurrent and repeated approval produce one saved decision and one credit change.
+- A revoked reviewer is denied in the tested sequential flow; remaining work can be reassigned.
+- Failed notifications preserve the committed decision. A fresh process reloads pending work and rejects an already completed review.
+- **11 focused checks passed**. Selected original source hashes stayed unchanged. Checked 9 November 2026.
 
-- **Submission intake:** accept an image or document with a description and category; store its Telegram file reference.
-- **Batch reservation:** reserve available work as a complete batch or report that the requested quantity is unavailable.
-- **Reviewer ownership:** claim queued work, resume an existing assignment and check ownership before accepting a decision.
-- **One recorded decision:** approve or reject each reserved item and keep related records consistent.
-- **Queue recovery:** when staff access is revoked, return the active batch to the queue and clear its reviewer assignment.
+![Observed workflow and separate recovery scenarios](assets/02-workflow-details.png)
 
-## Two engineering decisions
+*Captured from local synthetic-data demo: recorded results viewer. The underlying workflow and process-restart checks actually ran. No external account or payment was involved.*
 
-**Keep the check and the change together.** Database transactions and constraints protect related updates and limit conflicting assignments. These safeguards are present in the implementation; concurrent behavior still needs an executed test.
+## How it works
 
-**Treat repeated review clicks as a state check.** Ownership and the saved result determine whether a decision is accepted. Previously processed work is recognized without applying the decision again.
+```mermaid
+stateDiagram-v2
+  Available --> Reserved
+  Reserved --> Assigned
+  Assigned --> Reviewed
+  Assigned --> Reserved: reviewer access revoked
+```
 
-![Batch states: queued work is assigned, completed after all decisions, or returned to the queue when reviewer access is revoked](assets/review-states.svg)
-
-*Original state diagram. Names are neutral; individual items keep their recorded decisions when a batch is reassigned.*
+**Original stack:** Python, aiogram 3, aiosqlite, SQLite and asyncio. The harness substitutes delivery at the external boundary while retaining the selected original logic. The technical invariant is one recorded result and credit update per reviewed item in the verified path.
 
 ## My contribution
 
-I defined the requirements and roles, designed the intake and review workflow, and implemented the Python bot, service layer and SQLite state model. I worked on the Telegram interaction flow, transaction boundaries and recovery behavior, using manual testing and diagnosis during development. The verification described here is a later source review; it does not reproduce those testing sessions.
+I set the product requirements and review rules, directed AI-assisted development, and manually tested and diagnosed workflow problems. The private harness provides additional reproducible evidence for the selected original components.
 
-## What I can build for a client
+## What I can deliver for a client
 
-- A Telegram approval bot for document intake, content review or internal requests.
-- A shared work queue with staff roles, batch assignment and duplicate-action guards.
-- A small SQLite-backed operations tool with persistent status and reassignment workflows.
+- A request or approval queue with staff roles and assigned ownership.
+- Transactional reservations and guards against repeated actions.
+- A focused Python bot fix with a repeatable regression check.
 
-## Status & limitations
+## Limitations / private source
 
-This is a substantive MVP. **reviewed in source; execution not verified** applies to the bot and its transaction behavior.
+The whole Telegram application and real delivery were not run. Concurrent role changes still need hardening; the tested sequential revocation is not a guarantee for that race. Notifications have no durable replay, and persisted work does not preserve unfinished conversational input. Load, deployment and production results are not claimed.
 
-- No dedicated tests for this workflow were found in its own source tree; concurrency, restart and repeated-callback scenarios need an isolated test run.
-- Database commits and Telegram notifications are separate. There is no durable notification outbox, so saved work can exist without a delivered message.
-- In-progress dialogue uses memory storage and is lost after restart; saved reservations remain in SQLite.
-- The system stores file references. It does not verify document authenticity, decode image contents or prove content uniqueness. Schema migration also needs a reproducible test on a database copy.
+Private implementation — public case study. Source code is not publicly available.
 
-[Discuss a similar workflow](CONTACT.md)
+[Discuss a similar workflow](CONTACT.md) · [Portfolio](PORTFOLIO.md)
 
 © 2026 Anton Gorodnichiy. All rights reserved. [Rights and reuse](RIGHTS.md).
